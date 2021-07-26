@@ -1,4 +1,5 @@
-from django.shortcuts import render , redirect
+from django.shortcuts import render, redirect
+from django.contrib.auth.hashers import make_password,check_password
 from django.http import HttpResponse
 from .models.product import Product
 from .models.category import Category
@@ -14,7 +15,7 @@ def index(request):
     if categoryID:
         products = Product.get_all_products_by_categoryid(categoryID)
     else:
-        products = Product.get_all_products();
+        products = Product.get_all_products()
 
     data = {}
     data['products'] = products
@@ -47,7 +48,7 @@ def signup(request):
                             phone=phone,
                             email=email,
                             password=password)
-    
+
         if (not first_name):
             error_message = "First Name Required !!"
         elif len(first_name) < 4:
@@ -70,12 +71,12 @@ def signup(request):
         # saving
         if not error_message:
             print(first_name, last_name, phone, email, password)
-           
+            customer.password = make_password(customer.password)
             customer.register()
 
             return redirect('homepage')
         else:
-            data =  {
+            data = {
                 'error': error_message,
                 'values': value
             }
