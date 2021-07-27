@@ -48,6 +48,7 @@ def validateCustomer(customer):
 
     return error_message
 
+
 def registerUser(request):
 
     postData = request.POST
@@ -87,12 +88,31 @@ def registerUser(request):
         return render(request, 'signup.html', data)
 
 
-
-
 def signup(request):
     if request.method == 'GET':
         return render(request, 'signup.html')
 
     else:
         return registerUser(request)
-  
+
+
+def login(request):
+    if request.method == 'GET':
+        return render(request, 'login.html')
+
+    else:
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        customer = Customer.get_customer_by_email(email)
+        error_message = None
+
+        if customer:
+            flag = check_password(password,customer.password)
+            if flag:
+                return redirect('homepage')
+            else:
+                error_message = "Email or Password invalid"
+        else:
+            error_message = "Email or Password is Invalid !"
+
+        return render(request, 'login.html',{'error':error_message})
