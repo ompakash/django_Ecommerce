@@ -8,12 +8,26 @@ from django.views import View
 
 class Index(View):
 
-    def post(self,request):
+    def post(self, request):
         product = request.POST.get('product')
-        print(product)
+        cart = request.session.get('cart')
+        if cart:
+            quantity = cart.get(product)
+            if quantity:
+                cart[product] = quantity+1
+
+            else:
+                cart[product] = 1
+        else:
+            cart = {}
+            cart[product] = 1
+
+        request.session['cart'] = cart
+
         return redirect('homepage')
 
-    def get(self,request):
+    def get(self, request):
+        
         products = None
         categories = Category.get_all_categories()
 
@@ -26,8 +40,6 @@ class Index(View):
         data = {}
         data['products'] = products
         data['categories'] = categories
-        print(request.session.get('email'))
+        print(request.session.get('cart'))
 
         return render(request, 'index.html', data)
-
-
