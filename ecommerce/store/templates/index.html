@@ -26,7 +26,7 @@
     <div id='products' class="col-lg-9 mx-auto">
       <div class="row mx-auto">
         {% for product in products %}
-        <div class="card mx-auto mb-3" style="width: 14rem;">
+        <div class="card mx-auto mb-3" id="{{product.id}}" style="width: 14rem;">
           <img class="card-img-top" src="{{product.image.url}}" alt="Card image cap">
           <div class="card-body">
             <p class="card-title">{{product.name}}</p>
@@ -42,18 +42,18 @@
                 {% csrf_token %}
                 <input hidden type="text" name="product" value="{{product.id}}">
                 <input hidden type="text" name="remove" value="True">
-                <input type="submit" value="-" class="btn btn-block btn-secondary">
+                <input type="submit" value="-" class="btn btn-block btn-light">
               </form>
               <div class="text center col">{{product|cart_quantity:request.session.cart}} in cart</div>
-              <form action="" class="col-2" method="post">
+              <form action="/#{{product.id}}" class="col-2" method="post">
                 {% csrf_token %}
                 <input hidden type="text" name="product" value="{{product.id}}">
-                <input type="submit" value="+" class="btn btn-block btn-secondary">
+                <input type="submit" value="+" class="btn btn-block btn-light">
               </form>
             </div>
             {% else %}
 
-            <form action="/" method="POST" class="btn-block">
+            <form action="/#{{product.id}}" method="POST" class="btn-block">
               {% csrf_token %}
               <input hidden type="text" name="product" value="{{product.id}}">
               <input type="submit" class="float-right btn btn-light border form-control" value="Add to Cart">
@@ -61,19 +61,22 @@
 
             {% endif %}
 
-
           </div>
-
-
-
-
-
-
         </div>
         {% endfor %}
       </div>
     </div>
   </div>
+</div>
+
+<div class="jumbotron" id="abc">
+  <h1 class="display-3">Jumbo heading</h1>
+  <p class="lead">Jumbo helper text</p>
+  <hr class="my-2">
+  <p>More info</p>
+  <p class="lead">
+    <a class="btn btn-primary btn-lg" href="Jumbo action link" role="button">Jumbo action name</a>
+  </p>
 </div>
 
 {% endblock %}
