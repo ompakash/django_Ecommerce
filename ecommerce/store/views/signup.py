@@ -35,7 +35,7 @@ class Signup(View):
 
         # saving
         if not error_message:
-            print(first_name, last_name, phone, email, password)
+            # print(first_name, last_name, phone, email, password)
             customer.password = make_password(customer.password)
             customer.register()
 
